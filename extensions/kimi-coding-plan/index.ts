@@ -140,9 +140,15 @@ export default function kimiCodingPlanExtension(pi: ExtensionAPI) {
     },
   });
 
-  pi.registerProvider(PROVIDER_ID, providerConfig(DEFAULT_MODELS));
+  const initialModels = [...DEFAULT_MODELS];
 
-  fetchModelsFromModelsDev().then((models) => {
-    if (models) pi.registerProvider(PROVIDER_ID, providerConfig(models));
+  pi.registerProvider(PROVIDER_ID, providerConfig(initialModels));
+
+  fetchModelsFromModelsDev().then((remoteModels) => {
+    if (!remoteModels) return;
+    // Merge: local defaults take precedence, remote fills in any missing
+    const localIds = new Set(initialModels.map((m) => m.id));
+    const merged = [...initialModels, ...remoteModels.filter((m) => !localIds.has(m.id))];
+    pi.registerProvider(PROVIDER_ID, providerConfig(merged));
   });
 }
