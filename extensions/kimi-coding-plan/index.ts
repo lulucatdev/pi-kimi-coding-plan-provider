@@ -42,6 +42,15 @@ const DEFAULT_MODELS: ProviderModel[] = [
     contextWindow: 262144,
     maxTokens: 32768,
   },
+  {
+    id: "K2.6-code-preview",
+    name: "Kimi K2.6 Code Preview (Plan)",
+    reasoning: true,
+    input: ["text", "image"],
+    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+    contextWindow: 262144,
+    maxTokens: 32768,
+  },
 ];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
